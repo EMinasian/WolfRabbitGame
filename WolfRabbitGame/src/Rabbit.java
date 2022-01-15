@@ -6,10 +6,6 @@ public class Rabbit extends AbstractPiece {
 	
 
 	public Rabbit(int n, Piece d) {super(n, d);}
-	
-	//returns true if rabbit reaches the house
-
-	
 
 	public void display() {System.out.print('R');}
 	
@@ -39,13 +35,14 @@ public class Rabbit extends AbstractPiece {
 	
 	private boolean canMoveTo(int x, int y, Cell[][] c) {
 		if(y < 0 || y >= c.length) return false;
-		return canMoveTo(c[x][y], c);
+		if(c[x][y].isEmpty() || c[x][y].isHouse()) return true;
+		return false;
 	}
 	
-	private boolean canMoveTo(Cell cell, Cell[][] c) {
-		if(cell.isEmpty() || cell.isHouse()) return true;
-		else return false;
-	}
+//	private boolean canMoveTo(Cell cell, Cell[][] c) {
+//		if(cell.isEmpty() || cell.isHouse()) return true;
+//		else return false;
+//	}
 
 
 

@@ -23,13 +23,13 @@ public abstract class AbstractPiece implements Piece {
 	
 	protected Cell getDestination() {return dest.getCell();}
 	
-	
 	public boolean move(Cell[][] cells) {
-		if(reached()) return true;
 		Cell next = findNext(cells);
 		moveTo(getDestination(), getCell(), next, cells);
+		if(reached()) return true;
 		return false;
 	}
+	
 	
 	private Cell findNext(Cell[][] cells) {
 		List<Cell> nextPotMove = potentialCells(cells);

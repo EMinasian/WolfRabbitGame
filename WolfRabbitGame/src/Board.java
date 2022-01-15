@@ -17,27 +17,37 @@ public class Board {
 	
 	public Cell[][] getCells() {return cell;}
 	
-	public void initiate(int n, Piece rabbit, Piece house) {
+	public void initiate(int n, Piece rabbit, Piece house, Piece[] wolf) {
 		assign(n, rabbit);
 		assign(n, house);	
+//		assign(n, wolf);
+		for(int i = 0; i < wolf.length; i++)
+			assign(n, wolf[i]);
 	}
 	
-	public void play(Piece rabbit, Piece house) {
+	public void play(Piece rabbit, Piece[] wolf) {
 		boolean end = false;
 		do {
 			
 			display();
 			System.out.println();
-			end = nextRound(rabbit, house);
+			end = nextRound(rabbit, wolf);
 			
 		}
 		while(end == false);
 	}
 	
-	private boolean nextRound(Piece rabbit, Piece house) {
+	private boolean nextRound(Piece rabbit, Piece[] wolf) {
 		boolean rabWon = rabbit.move(cell);
+		boolean wolfWon = false;
+		for(int i = 0; i < wolf.length; i++) {
+			wolfWon = wolf[i].move(cell);
+			if(wolfWon == true) break;
+		}
+			
 		if(rabWon == true) System.out.print("\nThe rabbit reached the house!");
-		return rabWon;
+		else if(wolfWon == true) System.out.print("\nThe wolves reached the rabbit!");
+		return (rabWon || wolfWon);
 	}
 	
 	public void display() {
