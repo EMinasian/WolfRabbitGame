@@ -14,6 +14,7 @@ public class Cell {
 	public int getX() {return x;}
 	public int getY() {return y;}
 	
+	
 	public boolean isEmpty() {return piece == null;}
 	public boolean isHouse() {return piece instanceof House;}
 	

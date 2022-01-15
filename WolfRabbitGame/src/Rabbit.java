@@ -3,27 +3,27 @@ import java.util.List;
 
 public class Rabbit extends AbstractPiece {
 	
+	
 
-	public Rabbit(int n) {super(n);}
+	public Rabbit(int n, Piece d) {super(n, d);}
 	
 	//returns true if rabbit reaches the house
-	public boolean move(Piece dest, Cell[][] cells) {
-		Cell destination = dest.getCell();
-		Cell current = this.getCell();
-		if(destination.equals(current)) return true;
-		Cell next = findNext(destination, cells);
-		moveTo(destination, current, next, cells);
+	public boolean move(Cell[][] cells) {
+		if(reached()) return true;
+		Cell next = findNext(cells);
+		moveTo(getDestination(), getCell(), next, cells);
 		return false;
 	}
 	
 
 	public void display() {System.out.print('R');}
 	
+	private boolean reached() {return getCell().equals(getDestination());}
 	
-	private Cell findNext(Cell dest, Cell[][] cells) {
+	private Cell findNext(Cell[][] cells) {
 		List<Cell> nextPotMove = potentialCells(cells);
 		nextPotMove = potentialCells(cells);
-		prioritize(nextPotMove, dest);
+		prioritize(nextPotMove);
 		return nextPotMove.get(0);
 	}
 	
@@ -48,6 +48,7 @@ public class Rabbit extends AbstractPiece {
 		if(cell.isEmpty() || cell.isHouse()) return true;
 		else return false;
 	}
+
 
 
 

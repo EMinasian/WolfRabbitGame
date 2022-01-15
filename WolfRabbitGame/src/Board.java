@@ -4,8 +4,6 @@ public class Board {
 	
 	
 	static Cell[][] cell;
-	Piece rabbit;
-	Piece house;
 	
 	public Board(int n) {
 		cell = new Cell[n][n];
@@ -15,26 +13,29 @@ public class Board {
 		}
 		for(int i = 0; i < 6; i++)
 			assign(n, new Barrier());
-		rabbit = new Rabbit(n);
+	}
+	
+	public Cell[][] getCells() {return cell;}
+	
+	public void initiate(int n, Piece rabbit, Piece house) {
 		assign(n, rabbit);
-		house = new House();
 		assign(n, house);	
 	}
 	
-	public void play() {
+	public void play(Piece rabbit, Piece house) {
 		boolean end = false;
 		do {
 			
 			display();
 			System.out.println();
-			end = nextRound();
+			end = nextRound(rabbit, house);
 			
 		}
 		while(end == false);
 	}
 	
-	private boolean nextRound() {
-		boolean rabWon = rabbit.move(house, cell);
+	private boolean nextRound(Piece rabbit, Piece house) {
+		boolean rabWon = rabbit.move(cell);
 		if(rabWon == true) System.out.print("\nThe rabbit reached the house!");
 		return rabWon;
 	}

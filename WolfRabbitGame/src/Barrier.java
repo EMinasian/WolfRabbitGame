@@ -6,4 +6,10 @@ public class Barrier extends AbstractPiece {
 
 	public void display() {System.out.print('=');}
 
+	@Override
+	public boolean move(Cell[][] cells) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -1,13 +1,18 @@
 
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractPiece implements Piece {
 	
-	private boolean traversed[][];
+	private static boolean traversed[][];
 	private Cell cell;
+	private static Piece dest = null;
 	
 	public AbstractPiece() {}
-	public AbstractPiece(int n) {traversed = new boolean[n][n];}
+	public AbstractPiece(int n, Piece d) {
+		traversed = new boolean[n][n];
+		dest = d;
+		}
 	
 	public Cell getCell() {return cell;}
 	public void setCell(Cell c) {
@@ -16,47 +21,40 @@ public abstract class AbstractPiece implements Piece {
 			traversed[c.getX()][c.getY()] = true;
 		}
 	
+	public Cell getDestination() {return dest.getCell();}
+	
 	protected void moveTo(Cell dest, Cell cur, Cell next, Cell[][] c) {
 		this.setCell(c[next.getX()][next.getY()]);
 		c[next.getX()][next.getY()].setPiece(this);
 		c[cur.getX()][cur.getY()].setPiece(null);
 	}
 	
-	protected static void prioritize(List<Cell> potCells, Cell dest) {
-		distanceSort(potCells, dest);
+	protected static void prioritize(List<Cell> potCells) {
+		potCells.sort(new DistanceComp());
+		potCells.sort(new TraversedComp());
 	}
 	
-	private static void distanceSort(List<Cell> potCells, Cell dest) {
-		int n = potCells.size();
-		for(int k = 0; k < n; k++) {
-			int min = k;
-			for(int j = k + 1; j < n; j++)
-				if(distCompare(potCells.get(j), potCells.get(min), dest) < 0)
-					min = j;
-				Cell temp = potCells.get(k);
-				potCells.set(k, potCells.get(min));
-				potCells.set(min, temp);
+	private static class DistanceComp implements Comparator<Cell> {
+
+		public int compare(Cell c1, Cell c2) {
+			if(distance(c1) < distance(c2)) return -1;
+			if(distance(c1) > distance(c2)) return 1;
+			return 0;
+		}
+	}
+	
+	private static class TraversedComp implements Comparator<Cell> {
+		
+		public int compare(Cell c1, Cell c2) {
+			if(traversed[c1.getX()][c1.getY()] && !traversed[c2.getX()][c2.getY()]) return 1;
+			if(!traversed[c1.getX()][c1.getY()] && traversed[c2.getX()][c2.getY()]) return -1;
+			return 0;
 		}
 	}
 	
 	
-	private static int distCompare(Cell c1, Cell c2, Cell dest) {
-		if(distance(c1, dest) < distance(c2, dest)) return -1;
-		if(distance(c1, dest) > distance(c2, dest)) return 1;
-		return 0;
+	private static double distance(Cell c) {
+		return Math.hypot(Math.abs(c.getX() - dest.getCell().getX()), c.getY() - dest.getCell().getY());
 	}
-	
-//	private int traverseCompare(Cell c1, Cell c2) {
-//		if(traversed[c1.getX()][c1.getY()] && !traversed[c2.getX()][c2.getY()]) return 1;
-//		if(!traversed[c1.getX()][c1.getY()] && traversed[c2.getX()][c2.getY()]) return -1;
-//		return 0;
-//	}
-	
-	
-	private static double distance(Cell c, Cell dest) {
-		return Math.hypot(Math.abs(c.getX() - dest.getX()), c.getY() - dest.getY());
-	}
-	
-	
 	
 }
