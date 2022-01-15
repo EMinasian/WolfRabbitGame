@@ -8,26 +8,13 @@ public class Rabbit extends AbstractPiece {
 	public Rabbit(int n, Piece d) {super(n, d);}
 	
 	//returns true if rabbit reaches the house
-	public boolean move(Cell[][] cells) {
-		if(reached()) return true;
-		Cell next = findNext(cells);
-		moveTo(getDestination(), getCell(), next, cells);
-		return false;
-	}
+
 	
 
 	public void display() {System.out.print('R');}
 	
 	
-	
-	private Cell findNext(Cell[][] cells) {
-		List<Cell> nextPotMove = potentialCells(cells);
-		nextPotMove = potentialCells(cells);
-		prioritize(nextPotMove);
-		return nextPotMove.get(0);
-	}
-	
-	private List<Cell> potentialCells(Cell[][] cells) {
+	public List<Cell> potentialCells(Cell[][] cells) {
 		int curX = this.getCell().getX();
 		int curY = this.getCell().getY();
 		List<Cell> potCells = new LinkedList<>();

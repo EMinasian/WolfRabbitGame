@@ -23,6 +23,24 @@ public abstract class AbstractPiece implements Piece {
 	
 	protected Cell getDestination() {return dest.getCell();}
 	
+	
+	public boolean move(Cell[][] cells) {
+		if(reached()) return true;
+		Cell next = findNext(cells);
+		moveTo(getDestination(), getCell(), next, cells);
+		return false;
+	}
+	
+	private Cell findNext(Cell[][] cells) {
+		List<Cell> nextPotMove = potentialCells(cells);
+		nextPotMove = potentialCells(cells);
+		prioritize(nextPotMove);
+		return nextPotMove.get(0);
+	}
+	
+	protected abstract List<Cell> potentialCells(Cell[][] cells);
+	
+	
 	protected boolean reached() {return getCell().equals(getDestination());}
 	
 	protected void moveTo(Cell dest, Cell cur, Cell next, Cell[][] c) {
