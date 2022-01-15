@@ -18,7 +18,7 @@ public class Rabbit extends AbstractPiece {
 
 	public void display() {System.out.print('R');}
 	
-	private boolean reached() {return getCell().equals(getDestination());}
+	
 	
 	private Cell findNext(Cell[][] cells) {
 		List<Cell> nextPotMove = potentialCells(cells);
@@ -31,8 +31,19 @@ public class Rabbit extends AbstractPiece {
 		int curX = this.getCell().getX();
 		int curY = this.getCell().getY();
 		List<Cell> potCells = new LinkedList<>();
-		if(canMoveTo(curX + 1, curY, cells)) potCells.add(new Cell(curX + 1, curY));
-		if(canMoveTo(curX - 1, curY, cells)) potCells.add(new Cell(curX - 1, curY));
+		
+		if(curX + 1 < cells.length) {
+			if(canMoveTo(curX + 1, curY, cells)) potCells.add(new Cell(curX + 1, curY));
+		}
+		else {
+			if(canMoveTo(0, curY, cells)) potCells.add(new Cell(0, curY));
+		}
+		if(curX - 1 >= 0) {
+			if(canMoveTo(curX - 1, curY, cells)) potCells.add(new Cell(curX - 1, curY));
+		}
+		else {
+			if(canMoveTo(cells.length - 1 , curY, cells)) potCells.add(new Cell(cells.length - 1, curY));
+		}
 		if(canMoveTo(curX, curY + 1, cells)) potCells.add(new Cell(curX, curY + 1));
 		if(canMoveTo(curX, curY -1 , cells)) potCells.add(new Cell(curX, curY - 1));
 		return potCells;
@@ -40,7 +51,7 @@ public class Rabbit extends AbstractPiece {
 	
 	
 	private boolean canMoveTo(int x, int y, Cell[][] c) {
-		if(x < 0 || y < 0 || x >= c.length || y >= c.length) return false;
+		if(y < 0 || y >= c.length) return false;
 		return canMoveTo(c[x][y], c);
 	}
 	

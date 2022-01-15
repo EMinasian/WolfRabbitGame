@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class AbstractPiece implements Piece {
 	
-	private static boolean traversed[][];
+	private boolean traversed[][];
 	private Cell cell;
-	private static Piece dest = null;
+	private Piece dest = null;
 	
 	public AbstractPiece() {}
 	public AbstractPiece(int n, Piece d) {
@@ -21,7 +21,9 @@ public abstract class AbstractPiece implements Piece {
 			traversed[c.getX()][c.getY()] = true;
 		}
 	
-	public Cell getDestination() {return dest.getCell();}
+	protected Cell getDestination() {return dest.getCell();}
+	
+	protected boolean reached() {return getCell().equals(getDestination());}
 	
 	protected void moveTo(Cell dest, Cell cur, Cell next, Cell[][] c) {
 		this.setCell(c[next.getX()][next.getY()]);
@@ -29,12 +31,12 @@ public abstract class AbstractPiece implements Piece {
 		c[cur.getX()][cur.getY()].setPiece(null);
 	}
 	
-	protected static void prioritize(List<Cell> potCells) {
+	protected void prioritize(List<Cell> potCells) {
 		potCells.sort(new DistanceComp());
 		potCells.sort(new TraversedComp());
 	}
 	
-	private static class DistanceComp implements Comparator<Cell> {
+	private class DistanceComp implements Comparator<Cell> {
 
 		public int compare(Cell c1, Cell c2) {
 			if(distance(c1) < distance(c2)) return -1;
@@ -43,7 +45,7 @@ public abstract class AbstractPiece implements Piece {
 		}
 	}
 	
-	private static class TraversedComp implements Comparator<Cell> {
+	private class TraversedComp implements Comparator<Cell> {
 		
 		public int compare(Cell c1, Cell c2) {
 			if(traversed[c1.getX()][c1.getY()] && !traversed[c2.getX()][c2.getY()]) return 1;
@@ -53,7 +55,7 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	
-	private static double distance(Cell c) {
+	private double distance(Cell c) {
 		return Math.hypot(Math.abs(c.getX() - dest.getCell().getX()), c.getY() - dest.getCell().getY());
 	}
 	
