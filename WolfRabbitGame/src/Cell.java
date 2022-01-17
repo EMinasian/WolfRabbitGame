@@ -16,7 +16,7 @@ public class Cell {
 	
 	
 	public boolean isEmpty() {return piece == null;}
-	public boolean isHouse() {return piece instanceof House;}
+//	public boolean isHouse() {return piece instanceof House;}
 	public boolean isRabbit() {return piece instanceof Rabbit;}
 	
 	public boolean equals(Cell c) {
