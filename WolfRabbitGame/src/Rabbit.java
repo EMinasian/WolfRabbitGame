@@ -40,8 +40,4 @@ public class Rabbit extends AbstractPiece {
 		return false;
 	}
 	
-
-
-
-
 }

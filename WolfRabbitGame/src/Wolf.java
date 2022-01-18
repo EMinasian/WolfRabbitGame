@@ -30,8 +30,5 @@ public class Wolf extends AbstractPiece {
 		return false;
 	}
 	
-
-
-
 }
 
